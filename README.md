@@ -1,6 +1,6 @@
 ## Overview
 
-**Grid Pathfinder Visualizer** is a CLI utility for running and comparing state-space search algorithms on 2D grids. It processes `.txt` problem instances and outputs a step-by-step visualization of the search process and the final path.
+**Grid Pathfinding Visualizer** is a CLI utility for running and comparing state-space search algorithms on 2D grids. It processes `.txt` problem instances and outputs a step-by-step visualization of the search process and the final path.
 
 ## Demo
 
