@@ -1,6 +1,7 @@
 from enum import Enum
 
 class GridCell(Enum):
+    """Enum class indicating field in grid in grid pathfinding problem."""
     EMPTY = " "
     WALL = "#"
     START = "S"
@@ -8,6 +9,7 @@ class GridCell(Enum):
 
     @staticmethod
     def from_value(val: str) -> GridCell:
+        """Returns GridCell object based on corresponding string value."""
         if val == GridCell.EMPTY.value:
             return GridCell.EMPTY
         elif val == GridCell.WALL.value:

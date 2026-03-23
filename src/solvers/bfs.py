@@ -10,11 +10,7 @@ class BFS(Solver):
     def __init__(self, problem: GridPathfinding):
         self.problem = problem
         self.root = Node(
-            prev = None,
             state = self.problem.start,
-            action = None,
-            cost = 0.0,
-            parent=None
         )
         self.tree = Tree(self.root)
         self.queue = deque()

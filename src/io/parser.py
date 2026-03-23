@@ -23,8 +23,24 @@ class Parser():
     """
     def __init__(self):
         self._parser = ArgumentParser(
-            description="Grid Pathfinder - showcase of popular state-space search algorithms",
-            usage="uv run main.py [-h] [--algorithm {DFS, DFS-r, BFS}] [--heuristic {}] [--weight] problem_file_name"
+            description="Grid Pathfinder Visualizer - showcase of popular state-space search algorithms",
+            usage="""uv run main.py [SEARCH OPTIONS] [DISPLAY OPTIONS] [PATH TO PROBLEM INSTANCE]
+                Search Options:
+                -a, --algorithm      {bfs, dfs, bibfs, gbefs, astar}
+                -e, --heuristic      {man, euclid, diag}
+                -w, --weight         FLOAT (Default: 0 - no diagonal movement)
+
+                Display Options:
+                -nv, --no-visual     Disable animation
+                -s, --speed          FLOAT (Default: 8)
+                -c, --concise        Show summary in condensed way
+
+                Path to problem instance:
+                -problems are stored in problems/ directory.
+                
+                Example usage:
+                  uv run main.py -a astar -e man -c problems/plus_grid.txt
+                """        
         )
         self._setup_arguments()
 
@@ -53,29 +69,37 @@ class Parser():
         self._parser.add_argument(
             "-w",
             "--weight",
-            help="weight of diagonal movement in the grid. Default is 1.4.",
+            help="weight of diagonal movement in the grid. Default is 0(no diagonal movement).",
             type=float
         )
 
         self._parser.add_argument(
             "-nv",
-            "--visual",
-            help="weight of diagonal movement in the grid. Default is 1.4.",
-            action="store_false"
+            "--no-visual",
+            help="if used animation of solution to the problem wont be shown.",
+            action="store_true"
         )
 
         self._parser.add_argument(
             "-c",
             "--concise",
-            help="weight of diagonal movement in the grid. Default is 1.4.",
+            help="display performance metrics in condensed summary.",
             action="store_true"
+        )
+
+        self._parser.add_argument(
+            "-s",
+            "--speed",
+            help="speed of animation. Default is 8.",
+            type=float
         )
 
     def parse(self) -> tuple[
         GridPathfinding,
         Solver | BidirectionalSolver,
         bool,
-        bool
+        bool,
+        float
     ]:
         """Returns parsed arguments from input"""
         args = self._parser.parse_args()
@@ -83,6 +107,7 @@ class Parser():
         CONCISE = self._parse_concise(args)
         path_to_problem = self._parse_path(args)
         diagonal_weight = self._parse_weight(args)
+        SPEED = self._parse_speed(args)
         problem = self._parse_problem(
             path_to_problem,
             diagonal_weight
@@ -90,10 +115,10 @@ class Parser():
         heuristic = self._parse_heuristic(args, problem)
         solver = self._parse_algorithm(args, problem, heuristic)
 
-        return (problem, solver, NO_VISUAL, CONCISE)
+        return (problem, solver, NO_VISUAL, CONCISE, SPEED)
 
     def _parse_visual(self, args: Namespace) -> bool:
-        return args.visual
+        return args.no_visual
 
     def _parse_concise(self, args: Namespace) -> bool:
         return args.concise
@@ -101,12 +126,15 @@ class Parser():
     def _parse_path(self, args: Namespace) -> str:
         path_to_problem = Path(args.problem_file_name).resolve()
         if not path_to_problem.exists():
-            print(f"PATH: {path_to_problem} DOES'NT EXIST.")
+            print(f"PATH: {path_to_problem} DOES NOT EXIST.")
             sys.exit(1)
         return str(path_to_problem)
     
     def _parse_weight(self, args: Namespace) -> float:
-        return 1.4 if args.weight is None else args.weight
+        return 0 if args.weight is None else args.weight
+
+    def _parse_speed(self, args: Namespace) -> float:
+        return 8 if args.speed is None else args.speed
     
     def _parse_problem(self, path: str, diagonal_weight: float) -> GridPathfinding:
         problem = GridPathfinding(diagonal_weight)
@@ -134,7 +162,7 @@ class Parser():
             heuristic: Heuristic | None
     ) -> Solver | BidirectionalSolver:
         match args.algorithm.lower():
-            case "dfs-r":
+            case "dfs":
                 return DFSRecursive(problem)
             case "bfs":
                 return BFS(problem)

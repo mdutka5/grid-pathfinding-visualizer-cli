@@ -5,13 +5,11 @@ class Node():
     def __init__(
         self,
         state: GridCoord,
-        prev: Node | None,
-        parent: GridCoord | None,
-        action: GridMove | None,
-        cost: float,
+        prev: Node | None = None,
+        action: GridMove | None = None,
+        cost: float = 0.0,
     ):
         self.state = state
-        self.parent = parent
         self.action = action
         self.cost = cost
         self.prev = prev
@@ -26,7 +24,7 @@ class Node():
         return hash(self.state)
     
     @staticmethod
-    def reverse_node(node: Node) -> Node | None:
+    def reverse_node(node: Node) -> Node:
         pre = None
         curr = node
         next = None
@@ -36,9 +34,6 @@ class Node():
             curr.prev = pre
             pre = curr
             curr = next
-
         if pre is None:
-            raise ValueError("Pre is None!")
-
-        if pre is not None:
-            return pre
+            raise ValueError("./src/tree/node.py -> reverse_node -> pre is None.")
+        return pre

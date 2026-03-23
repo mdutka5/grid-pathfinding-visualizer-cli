@@ -4,10 +4,10 @@ from src.io.visualizer import Visualizer
 
 def main():
     parser = Parser()
-    problem, solver, NO_VISUAL, CONCISE = parser.parse()
-    
+    problem, solver, NO_VISUAL, CONCISE, SPEED = parser.parse()
+
     Reporter.print_problem_info(problem, CONCISE)
-    
+
     solution_node = solver.solve()
 
     if solution_node is not None:
@@ -18,11 +18,11 @@ def main():
             problem,
             solver,
             solution_node,
-            NO_VISUAL
+            NO_VISUAL,
+            SPEED
         )
     else:
         print("Solver failed to find a solution.")
-
 
 if __name__ == "__main__":
     main()

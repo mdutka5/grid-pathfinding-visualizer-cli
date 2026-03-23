@@ -3,22 +3,6 @@ from src.tree.node import Node
 from src.heuristics.heuristic import Heuristic
 
 class Solver(ABC):
-    # @property
-    # @abstractmethod 
-    # def name(self) -> str:
-    #     pass
-    #
-    # @property
-    # @abstractmethod 
-    # def search_time(self) -> float:
-    #     pass
-    #
-    # @property
-    # @abstractmethod 
-    # def checked_nodes(self) -> int:
-    #     pass
-    #
-    
     name: str
     checked_nodes: int
     search_time: float
@@ -29,26 +13,6 @@ class Solver(ABC):
         pass
 
 class BidirectionalSolver(ABC):
-    # @property
-    # @abstractmethod 
-    # def name(self) -> str:
-    #     pass
-    #
-    # @property
-    # @abstractmethod 
-    # def search_time(self) -> float:
-    #     pass
-    #
-    # @property
-    # @abstractmethod 
-    # def checked_nodes(self) -> int:
-    #     pass
-    #
-    # @property
-    # @abstractmethod 
-    # def both_paths(self) -> tuple[Node, Node]:
-    #     pass
-    
     name: str
     checked_nodes: int
     search_time: float

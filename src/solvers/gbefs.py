@@ -11,11 +11,7 @@ class GBeFS(Solver):
         self.problem = problem
         self.heuristic = heuristic
         self.root = Node(
-            prev = None,
             state = self.problem.start,
-            action = None,
-            cost = 0.0,
-            parent= None
         )
         self.tree = Tree(self.root)
         self.queue = PriorityQueue(self.heuristic)

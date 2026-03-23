@@ -10,11 +10,7 @@ class DFSRecursive(Solver):
         self.problem = problem
         self.visited: set[GridCoord] = set()
         self.root = Node(
-            prev=None,
             state=problem.start,
-            action=None,
-            parent=None,
-            cost=0
         )
         self.tree = Tree(self.root)
         self.search_time = 0.0

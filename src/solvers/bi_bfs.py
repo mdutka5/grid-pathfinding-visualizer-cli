@@ -10,18 +10,10 @@ class BidirectionalBFS(BidirectionalSolver):
     def __init__(self, problem: GridPathfinding):
         self.problem = problem
         self.root_from_start: Node = Node(
-            parent=None,
-            prev=None,
             state=self.problem.start,
-            cost=0.0,
-            action=None
         )
         self.root_from_goal: Node = Node(
-            parent=None,
-            prev=None,
             state=self.problem.goal,
-            cost=0.0,
-            action=None
         )
         self.tree_from_start: Tree = Tree(
             self.root_from_start
@@ -49,22 +41,42 @@ class BidirectionalBFS(BidirectionalSolver):
         self.name = "Bidirectional BFS"
     
     def bi_bfs(self) -> Node | None:
+        start_turn = True
         while self.queue_from_goal and self.queue_from_start:
-            if len(self.queue_from_start) <= len(self.queue_from_goal):
+            if start_turn:
                 found_node = self._expand_side(
                     self.queue_from_start,
                     self.visited_from_start,
                     self.visited_from_goal
                 )
+                start_turn = not start_turn
             else:
                 found_node = self._expand_side(
                     self.queue_from_goal,
                     self.visited_from_goal,
                     self.visited_from_start,
                 )
+                start_turn = not start_turn
             if found_node:
                 self.both_paths = found_node
                 return self._join_paths(found_node)
+
+        # while self.queue_from_goal and self.queue_from_start:
+        #     if len(self.queue_from_start) <= len(self.queue_from_goal):
+        #         found_node = self._expand_side(
+        #             self.queue_from_start,
+        #             self.visited_from_start,
+        #             self.visited_from_goal
+        #         )
+        #     else:
+        #         found_node = self._expand_side(
+        #             self.queue_from_goal,
+        #             self.visited_from_goal,
+        #             self.visited_from_start,
+        #         )
+        #     if found_node:
+        #         self.both_paths = found_node
+        #         return self._join_paths(found_node)
         
         return None
 
@@ -112,9 +124,6 @@ class BidirectionalBFS(BidirectionalSolver):
             new_node = Node(
                 state=state,
                 prev=new_node, 
-                cost=0.0,
-                action=None,
-                parent=None
             )
         return Node.reverse_node(new_node) if new_node is not None else None
 

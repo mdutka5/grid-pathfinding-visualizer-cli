@@ -12,7 +12,6 @@ class Tree():
             child_node = Node(
                 prev=node,
                 state=child_state,
-                parent=node.state,
                 cost=node.cost + problem.action_cost(action),
                 action=action
             )
